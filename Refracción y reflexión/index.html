@@ -1,0 +1,168 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Refracción y Reflexión</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Simulador Didáctico de Refracción y Reflexión en Materiales</h1>
+            <div class="logo">
+                <img src="/GIEDI-LOGO.png" alt="GIEDI Logo">
+            </div>
+        </header>
+        
+        <div class="simulation-container">
+            <div class="controls-panel">
+                <div class="material-controls">
+                    <h3>Placa de Material</h3>
+                    <div class="control-group">
+                        <label for="material">Material:</label>
+                        <select id="material">
+                            <option value="glass">Vidrio</option>
+                            <option value="acrylic">Acrílico</option>
+                            <option value="quartz">Cuarzo</option>
+                            <option value="diamond">Diamante</option>
+                            <option value="ice">Hielo</option>
+                            <option value="zirconium">Circonio</option>
+                            <option value="unknown">Material Desconocido</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="thickness">Espesor (mm):</label>
+                        <input type="range" id="thickness" min="1" max="20" value="5" step="1">
+                        <span id="thickness-value">5 mm</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="exterior">Medio Exterior:</label>
+                        <select id="exterior">
+                            <option value="vacuum">Vacío</option>
+                            <option value="air" selected>Aire</option>
+                            <option value="methanol">Metanol</option>
+                            <option value="water">Agua</option>
+                            <option value="acetaldehyde">Acetaldeído</option>
+                            <option value="sugarSolution30">Solución de azúcar 30%</option>
+                            <option value="heptanol">Heptanol (25°C)</option>
+                            <option value="glycerin">Glicerina</option>
+                            <option value="benzene">Benceno</option>
+                            <option value="sugarSolution80">Solución de azúcar 80%</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="laser-controls">
+                    <h3>Láser</h3>
+                    <div class="control-group">
+                        <label for="wavelength">Longitud de onda (nm):</label>
+                        <input type="range" id="wavelength" min="380" max="750" value="650" step="1">
+                        <span id="wavelength-value">650 nm</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="angle">Ángulo de incidencia:</label>
+                        <input type="range" id="angle" min="0" max="89" value="30" step="1">
+                        <span id="angle-value">30°</span>
+                    </div>
+                </div>
+                
+                <div class="grid-controls">
+                    <h3>Configuración de Grilla</h3>
+                    <div class="control-group">
+                        <label>Separación:</label>
+                        <div class="button-group">
+                            <button id="grid-1mm" class="grid-button active">1 mm</button>
+                            <button id="grid-5mm" class="grid-button">5 mm</button>
+                            <button id="grid-10mm" class="grid-button">10 mm</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="simulation-options">
+                    <div class="control-group">
+                        <label for="apply-errors">Aplicar Errores:</label>
+                        <input type="checkbox" id="apply-errors">
+                    </div>
+                    <div class="button-group">
+                        <button id="admin-button">Administrador</button>
+                        <button id="reset-simulation">Reiniciar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="simulation-view">
+                <canvas id="simulation-canvas"></canvas>
+            </div>
+        </div>
+        
+        <div class="data-section">
+            <h3>Tabla de Datos</h3>
+            <div class="table-controls">
+                <button id="add-data">Agregar Medición</button>
+                <button id="calculate-stats">Estadísticas</button>
+                <button id="export-data">Exportar Datos</button>
+            </div>
+            <div class="table-container">
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Espesor (mm)</th>
+                            <th>Material</th>
+                            <th>Índice Refracción</th>
+                            <th>Ángulo Incidencia</th>
+                            <th>Ángulo Refracción</th>
+                            <th>IR Experimental</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se generarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div id="stats-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Análisis Estadístico</h2>
+                <div class="chart-container">
+                    <canvas id="histogram-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="scatter-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="boxplot-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div id="admin-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Acceso Administrador</h2>
+                <div id="admin-login">
+                    <label for="admin-password">Contraseña:</label>
+                    <input type="password" id="admin-password">
+                    <button id="admin-login-btn">Acceder</button>
+                </div>
+                <div id="admin-panel" style="display: none;">
+                    <h3>Valores Reales de Simulación</h3>
+                    <div id="real-values">
+                        <!-- Información de administrador generada con JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Autor: Rodrigo Agosta | Grupo de Investigación: GIEDI</p>
+            <p>Facultad Regional Santa Fe, Universidad Tecnológica Nacional</p>
+        </footer>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
